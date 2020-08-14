@@ -205,14 +205,15 @@ def create_app(test_config=None):
         # print(request.form)
         data = request.get_json()
         print("data", data)
-        question = data['question']
-        answer = data['answer']
-        difficulty = data['difficulty']
-        category = data['category']
-        if ((question == '') or (answer == '') or (
-                difficulty == '') or (category == '')):
-            flag422 = True
-            abort(422)
+        question = data.get('question','')
+        answer = data.get('answer','')
+        difficulty = data.get('difficulty','')
+        category = data.get('category','')
+
+        # .replace(" ", "")
+        if ((question.replace(" ", "") == '') or (answer.replace(" ", "") == '') or 
+        (difficulty == '') or (category == '')):
+            abort(400)
         try:
             questionx = Question(
                 question=question,

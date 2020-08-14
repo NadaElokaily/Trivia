@@ -62,7 +62,7 @@ class TriviaAPITestCase(unittest.TestCase):
         self.assertEqual(data['quiz questions'][0]['id'], 19)
 
     def test_delete_question(self):
-        question_id = '13'
+        question_id = '10'
         path_to_question_to_be_deleted = '/questions/'+question_id
         response = self.client().delete(path_to_question_to_be_deleted)
         data = json.loads(response.data)
@@ -104,6 +104,13 @@ class TriviaAPITestCase(unittest.TestCase):
         data = json.loads(response.data)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['added question'], question_to_be_created['question'])
+
+    def test_create_empty_fields_question(self):
+        question_to_be_created = {'question': 'xy','answer': 'yada','category': 4}
+        response = self.client().post('/questions', json=question_to_be_created)
+        data = json.loads(response.data)
+        self.assertEqual(response.status_code, 400)
+        # self.assertNotTrue(data['added question'])
 
     def get_certain_category_questions(self):
         response = self.client().get('/categories/3/questions')
