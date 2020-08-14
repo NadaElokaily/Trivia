@@ -16,12 +16,12 @@ def create_app(test_config=None):
     setup_db(app)
 
     '''
-  @TODO: Set up CORS. Allow '*' for origins. Delete the sample route after completing the TODOs
+  @DONE: Set up CORS. Allow '*' for origins. Delete the sample route after completing the DONEs
   '''
     cors = CORS(app, resources={r"/": {"origins": "*"}})
 
     '''
-  @TODO: Use the after_request decorator to set Access-Control-Allow
+  @DONE: Use the after_request decorator to set Access-Control-Allow
   '''
     @app.after_request
     def after_request(response):
@@ -34,7 +34,7 @@ def create_app(test_config=None):
         return response
 
     '''
-  @TODO:
+  @DONE:
   Create a POST endpoint to get questions to play the quiz.
   This endpoint should take category and previous question parameters
   and return a random questions within the given category,
@@ -52,13 +52,17 @@ def create_app(test_config=None):
             prv_ids = data['previous_question']
             category_id = data['category']
             print("prvids",prv_ids,"category_id",category_id)
-            category = Category.query.filter(
-                Category.id == category_id).one_or_none()
-            # print("cat",category)
-            if category is None:
-                abort(422)
-            all_questions = Question.query.filter(
-                Question.category == category_id).all()
+            if category_id == 0:
+                print("all categories")
+                all_questions = Question.query.all()
+            else:
+                category = Category.query.filter(
+                    Category.id == category_id).one_or_none()
+                # print("cat",category)
+                if category is None:
+                    abort(422)
+                all_questions = Question.query.filter(
+                    Question.category == category_id).all()
             # print("hi")
             all_questions_list = [q.format() for q in all_questions]
             # print("all_questions_list",all_questions_list)
@@ -91,7 +95,7 @@ def create_app(test_config=None):
             abort(422)
 
     '''
-  @TODO:
+  @DONE:
   Create an endpoint to handle GET requests
   for all available categories.
   '''
@@ -118,7 +122,7 @@ def create_app(test_config=None):
             abort(422)
 
     '''
-  @TODO:
+  @DONE:
   Create an endpoint to handle GET requests for questions,
   including pagination (every 10 questions).
   This endpoint should return a list of questions,
@@ -164,7 +168,7 @@ def create_app(test_config=None):
             abort(422)
 
     '''
-  @TODO:
+  @DONE:
   Create an endpoint to DELETE question using a question ID.
 
   TEST: When you click the trash icon next to a question, the question will be removed.
@@ -189,7 +193,7 @@ def create_app(test_config=None):
             abort(422)
 
     '''
-  @TODO:
+  @DONE:
   Create an endpoint to POST a new question,
   which will require the question and answer text,
   category, and difficulty score.
@@ -231,7 +235,7 @@ def create_app(test_config=None):
 
     #  -d '{/"question/":/"hi/",/"answer/":/"hello/",/"difficulty/":/"hard/",/"category/":/"History/"}'
     '''
-  @TODO:
+  @DONE:
   Create a POST endpoint to get questions based on a search term.
   It should return any questions for whom the search term
   is a substring of the question.
@@ -266,7 +270,7 @@ def create_app(test_config=None):
             abort(404)
 
     '''
-  @TODO:
+  @DONE:
   Create a GET endpoint to get questions based on category.
 
   TEST: In the "List" tab / main screen, clicking on one of the
@@ -289,7 +293,7 @@ def create_app(test_config=None):
         })
 
     '''
-  @TODO:
+  @DONE:
   Create error handlers for all expected errors
   including 404 and 422.
   '''
