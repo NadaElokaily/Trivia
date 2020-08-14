@@ -51,7 +51,7 @@ def create_app(test_config=None):
             data = request.get_json()
             prv_ids = data['previous_question']
             category_id = data['category']
-            print("prvids",prv_ids,"category_id",category_id)
+            print("prvids", prv_ids, "category_id", category_id)
             if category_id == 0:
                 print("all categories")
                 all_questions = Question.query.all()
@@ -65,6 +65,7 @@ def create_app(test_config=None):
                     Question.category == category_id).all()
             # print("hi")
             all_questions_list = [q.format() for q in all_questions]
+            random.shuffle(all_questions_list)
             # print("all_questions_list",all_questions_list)
             questions_to_be_asked = []
             # print(len(all_questions_list))
@@ -73,24 +74,24 @@ def create_app(test_config=None):
                 if q['id'] not in prv_ids:
                     # print("not here", q['id'])
                     q_dict = {}
-                    q_dict['id']=q['id'] 
-                    q_dict['question']=q['question']
-                    q_dict['answer']=q['answer']
-                    q_dict['category']=q['category']
-                    q_dict['difficulty']=q['difficulty']
+                    q_dict['id'] = q['id']
+                    q_dict['question'] = q['question']
+                    q_dict['answer'] = q['answer']
+                    q_dict['category'] = q['category']
+                    q_dict['difficulty'] = q['difficulty']
                     questions_to_be_asked.append(q)
             # print("questions_to_be_asked",questions_to_be_asked)
             # print("question",questions_to_be_asked[0])
             if len(questions_to_be_asked):
-              return jsonify({
-                  'question':questions_to_be_asked[0],
-                  'quiz questions': questions_to_be_asked
-              }), 200
+                return jsonify({
+                    'question': questions_to_be_asked[0],
+                    'quiz questions': questions_to_be_asked
+                }), 200
             else:
-              print("no further questions")
-              return jsonify({
-                'quiz questions':[]
-              }), 200
+                print("no further questions")
+                return jsonify({
+                    'quiz questions': []
+                }), 200
         except Exception:
             abort(422)
 
@@ -209,14 +210,14 @@ def create_app(test_config=None):
         # print(request.form)
         data = request.get_json()
         print("data", data)
-        question = data.get('question','')
-        answer = data.get('answer','')
-        difficulty = data.get('difficulty','')
-        category = data.get('category','')
+        question = data.get('question', '')
+        answer = data.get('answer', '')
+        difficulty = data.get('difficulty', '')
+        category = data.get('category', '')
 
         # .replace(" ", "")
-        if ((question.replace(" ", "") == '') or (answer.replace(" ", "") == '') or 
-        (difficulty == '') or (category == '')):
+        if ((question.replace(" ", "") == '') or (answer.replace(" ", "")
+                                                  == '') or (difficulty == '') or (category == '')):
             abort(400)
         try:
             questionx = Question(
