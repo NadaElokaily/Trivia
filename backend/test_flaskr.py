@@ -41,8 +41,7 @@ class TriviaAPITestCase(unittest.TestCase):
 
     def test_get_questions(self):
         response = self.client().get('/questions')
-        data = json.loads(response.data)
-        self.assertEqual(data['success'],True)        
+        data = json.loads(response.data)      
         self.assertTrue(data['all categories'])
         self.assertTrue(data['questions'])
         self.assertEqual(len(data['questions']),10)
@@ -56,7 +55,7 @@ class TriviaAPITestCase(unittest.TestCase):
 
     def test_quiz(self):
         quiz_data = {'previous_question': [16,17,18],'category': 2}        
-        response = self.client().post('/quiz', json=quiz_data)
+        response = self.client().post('/quizzes', json=quiz_data)
         data = json.loads(response.data)
         self.assertEqual(response.status_code, 200)
         self.assertTrue(data['quiz questions'])

@@ -1,3 +1,4 @@
+/*eslint-plugin-disable react*/
 import React, { Component } from 'react';
 import $ from 'jquery';
 
@@ -44,7 +45,7 @@ class QuizView extends Component {
   }
 
   getNextQuestion = () => {
-    const previousQuestions = [...this.state.previousQuestions]
+    const previousQuestions = this.state.previousQuestions
     if(this.state.currentQuestion.id) { previousQuestions.push(this.state.currentQuestion.id) }
 
     $.ajax({
@@ -53,8 +54,8 @@ class QuizView extends Component {
       dataType: 'json',
       contentType: 'application/json',
       data: JSON.stringify({
-        previous_questions: previousQuestions,
-        quiz_category: this.state.quizCategory
+        previous_question: previousQuestions,
+        category: this.state.quizCategory['id']
       }),
       xhrFields: {
         withCredentials: true
